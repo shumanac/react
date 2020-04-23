@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="https://fb.me/react-0.14.3.min.js"></script>
+<script src="https://fb.me/react-dom-0.14.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
+</head>
+
+<body>
+  <div id="container"></div>
+</body>
+
+<script type="text/babel">
+const data = [
+    { checked: false, value: 'Checkbox-1' },
+    { checked: false, value: 'Checkbox-2' },
+    { checked: false, value: 'Checkbox-3' },
+    { checked: false, value: 'Checkbox-4' },
+    { checked: false, value: 'Checkbox-5' },
+];
+
+const Item = props => (
+    <div>
+        <input type="checkbox" checked={props.checked} onChange={props.onCheckChange} />
+        { props.value }
+    </div>
+)
+var CheckboxCount = React.createClass({
+    getInitialState() {
+        return {
+            items: this.props.items.concat(),
+        };
+    },
+
+    onCheckChange(idx) {
+        return () => {
+            const items = this.state.items.concat();
+            items[idx].checked = !items[idx].checked;
+            this.setState({items});
+        }
+    },
+
+    totalChecked() {
+        return this.state.items.filter(props => props.checked).length;
+    },
+
+  render() {
+    return (
+            <div>
+                { this.state.items.map((props, idx) => (
+                    <Item {...props} key={idx} onCheckChange={this.onCheckChange(idx)} />
+                )) }
+                Total Checkbox Checked: { this.totalChecked() }
+            </div>
+        );
+  }
+});
+
+ReactDOM.render(
+  <CheckboxCount items={data} />,
+  document.getElementById('container')
+);
+</script>
+
+</html>
